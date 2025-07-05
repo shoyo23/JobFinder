@@ -8,50 +8,57 @@
 import SwiftUI
 
 
+import SwiftUI
 
 struct WalkthroughView: View {
+    @State private var navigateToLogin = false
+
     var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                
-                // Top Illustration
-                Image(systemName: "globe")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 300)
-                    .padding(.top, 40)
-                
-                // Title Text
-                VStack(alignment: .leading, spacing: 5) {
-                    Text("Find Your")
-                        .font(.system(size: 32, weight: .bold))
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: 20) {
                     
-                    Text("Dream Job")
-                        .font(.system(size: 32, weight: .bold))
-                        .foregroundColor(.orange)
-                        .underline()
+                    // Top Illustration
+                    Image(systemName: "globe")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 300)
+                        .padding(.top, 40)
                     
-                    Text("Here!")
-                        .font(.system(size: 32, weight: .bold))
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal)
-                
-                // Description
-                Text("Explore all the most exciting job roles based on your interest and study major.")
-                    .font(.body)
-                    .foregroundColor(.gray)
-                    .padding(.horizontal)
+                    // Title Text
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text("Find Your")
+                            .font(.system(size: 32, weight: .bold))
+                        
+                        Text("Dream Job")
+                            .font(.system(size: 32, weight: .bold))
+                            .foregroundColor(.orange)
+                            .underline()
+                        
+                        Text("Here!")
+                            .font(.system(size: 32, weight: .bold))
+                    }
                     .frame(maxWidth: .infinity, alignment: .leading)
-                
-                Spacer()
-                    .frame(height: 50)
-                
-                // Next Button
+                    .padding(.horizontal)
+                    
+                    // Description
+                    Text("Explore all the most exciting job roles based on your interest and study major.")
+                        .font(.body)
+                        .foregroundColor(.gray)
+                        .padding(.horizontal)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    Spacer()
+                        .frame(height: 50)
+                }
+            }
+
+            // Floating Button
+            .overlay(
                 HStack {
-                    Spacer() // Pushes the button to the right
+                    Spacer()
                     Button(action: {
-                        // Action for navigation
+                        navigateToLogin = true
                     }) {
                         Image(systemName: "arrow.right")
                             .foregroundColor(.white)
@@ -62,13 +69,17 @@ struct WalkthroughView: View {
                     }
                 }
                 .padding(.bottom, 40)
-                .padding(.horizontal)
-                
+                .padding(.horizontal),
+                alignment: .bottom
+            )
+
+
+            .navigationDestination(isPresented: $navigateToLogin) {
+                LoginView()
             }
         }
     }
 }
-
 
 
 
