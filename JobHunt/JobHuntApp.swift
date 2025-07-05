@@ -11,7 +11,7 @@ import SwiftUI
 struct JobHuntApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            WalkthroughView()
         }
     }
 }
