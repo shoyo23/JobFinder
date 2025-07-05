@@ -18,8 +18,8 @@ struct WalkthroughView: View {
             ScrollView {
                 VStack(spacing: 20) {
                     
-                    // Top Illustration
-                    Image(systemName: "globe")
+                    // Top content
+                    Image("icon_WalkthroughImage")
                         .resizable()
                         .scaledToFit()
                         .frame(height: 300)

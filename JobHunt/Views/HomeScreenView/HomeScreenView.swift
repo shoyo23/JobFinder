@@ -5,180 +5,171 @@
 //  Created by Ankush Shandil on 05/07/25.
 //
 
+
+
 import SwiftUI
 
 struct HomeScreenView: View {
     var body: some View {
-        VStack(spacing: 20) {
+        ZStack(alignment: .top) {
+            Color.indigo.ignoresSafeArea()
 
-            // Top Greeting and Profile
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Hello")
-                        .font(.title2)
-                        .foregroundColor(.gray)
-                    Text("Ankush Shandil")
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .foregroundColor(.indigo)
-                }
+            VStack(spacing: 0) {
+                // MARK: - Header Section
+                VStack(alignment: .leading, spacing: 20) {
+                    HStack {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Hello, Ankush 👋")
+                                .font(.title2)
+                                .bold()
+                                .foregroundColor(.white)
 
-                Spacer()
-
-                Image("icon_Girl")
-                    .resizable()
-                    .frame(width: 40, height: 40)
-                    .clipShape(Circle())
-            }
-            .padding(.horizontal)
-
-            // Begin Scrollable Content
-            ScrollView {
-                VStack(spacing: 20) {
-                    // Promo Banner
-                    ZStack {
-                        // Banner background
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(Color.blue)
-                            .frame(height: 140)
-
-                        HStack {
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text("50% off")
-                                    .font(.headline)
-                                    .foregroundColor(.white)
-
-                                Text("take any courses")
-                                    .font(.subheadline)
-                                    .foregroundColor(.white)
-
-                                Button(action: {}) {
-                                    Text("Join Now")
-                                        .font(.subheadline)
-                                        .padding(.horizontal, 16)
-                                        .padding(.vertical, 8)
-                                        .background(Color.orange)
-                                        .foregroundColor(.white)
-                                        .cornerRadius(10)
-                                }
-                            }
-
-                            Spacer()
+                            Text("Find your dream job")
+                                .font(.subheadline)
+                                .foregroundColor(.white.opacity(0.9))
                         }
-                        .padding(.leading)
-                        
+
+                        Spacer()
 
                         Image("icon_Girl")
                             .resizable()
-                            .scaledToFit()
-                            .frame(width: 130, height: 130)
-                            .offset(x: 90, y: 10)
-                            
-                            
+                            .frame(width: 44, height: 44)
+                            .clipShape(Circle())
                     }
                     .padding(.horizontal)
 
+                    HStack(spacing: 12) {
+                        HStack {
+                            Image(systemName: "magnifyingglass")
+                                .foregroundColor(.gray)
+                            TextField("Search job title, company...", text: .constant(""))
+                        }
+                        .padding()
+                        .background(Color.white)
+                        .cornerRadius(12)
 
+                        Button {
+                            // Filter action
+                        } label: {
+                            Image(systemName: "slider.horizontal.3")
+                                .foregroundColor(.white)
+                                .padding(10)
+                                .background(Color.orange)
+                                .clipShape(Circle())
+                        }
+                    }
+                    .padding(.horizontal)
+                }
+                .padding(.top, 60)
+                .padding(.bottom, 24)
 
-                    // Job Categories
-                    VStack(alignment: .leading) {
-                        Text("Find Your Job")
-                            .font(.headline)
-                        HStack(spacing: 16) {
-                            JobCategoryCard(title: "Remote Job", count: "44.5k", color: .blue, icon: "doc.text")
-                            VStack(spacing: 16) {
-                                JobCategoryCard(title: "Full Time", count: "66.8k", color: .purple, icon: "clock.fill")
-                                JobCategoryCard(title: "Part Time", count: "38.9k", color: .orange, icon: "clock")
+                // MARK: - Scrollable Content
+                ZStack(alignment: .top) {
+                    Color.white
+                        .clipShape(RoundedCorner(radius: 15, corners: [.topLeft, .topRight]))
+                        .edgesIgnoringSafeArea(.bottom)
+
+                    ScrollView(showsIndicators: false) {
+                        VStack(spacing: 24) {
+                            // Category Tabs
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 16) {
+                                    CategoryTab(title: "Remote", icon: "laptopcomputer")
+                                    CategoryTab(title: "Full Time", icon: "clock")
+                                    CategoryTab(title: "Part Time", icon: "clock.badge")
+                                    CategoryTab(title: "Design", icon: "paintbrush")
+                                    CategoryTab(title: "Marketing", icon: "megaphone")
+                                }
+                                .padding(.horizontal)
+                                .padding(.top)
                             }
+
+                            // Recent Jobs Header
+                            HStack {
+                                Text("Recent Job List")
+                                    .font(.headline)
+                                Spacer()
+                                Button {
+                                    // See more action
+                                } label: {
+                                    Text("See More")
+                                        .foregroundColor(.blue)
+                                        .font(.subheadline)
+                                }
+                            }
+                            .padding(.horizontal)
+
+                            // Job Cards
+                            VStack(spacing: 16) {
+                                ForEach(jobList) { job in
+                                    JobItemView(
+                                        logo: job.logo,
+                                        title: job.title,
+                                        location: job.location,
+                                        salary: job.salary,
+                                        tags: job.tags
+                                    )
+                                }
+                            }
+                            .padding(.horizontal)
+
+                            Spacer(minLength: 100)
                         }
+                        .padding(.top)
                     }
-                    .padding(.horizontal)
-
-                    // Recent Job List
-                    HStack {
-                        Text("Recent Job List")
-                            .font(.headline)
-                        Spacer()
-                        Text("See More")
-                            .foregroundColor(.blue)
-                            .font(.subheadline)
-                    }
-                    .padding(.horizontal)
-
-//                    JobItemView(
-//                        logo: "globe",
-//                        title: "Product Designer",
-//                        location: "California, USA",
-//                        salary: "$15K / Mo",
-//                        tags: ["Product Designer", "Full Time"]
-//                    )
-                    VStack(spacing: 16) {
-                        ForEach(jobList) { job in
-                            JobItemView(
-                                logo: job.logo,
-                                title: job.title,
-                                location: job.location,
-                                salary: job.salary,
-                                tags: job.tags
-                            )
-                        }
-                    }
-                    .padding(.horizontal)
-
-                    Spacer(minLength: 100)
                 }
-            }
+                .frame(maxHeight: .infinity)
 
-            // Bottom Tab Bar
-            HStack {
-                Spacer()
-                Image(systemName: "house.fill")
-                Spacer()
-                Image(systemName: "bell")
-                Spacer()
-                ZStack {
-                    Circle()
-                        .fill(Color.indigo)
-                        .frame(width: 50, height: 50)
-                    Image(systemName: "plus")
-                        .foregroundColor(.white)
+                // MARK: - Bottom Tab Bar
+                HStack {
+                    Spacer()
+                    Image(systemName: "house.fill")
+                    Spacer()
+                    Image(systemName: "bell")
+                    Spacer()
+                    ZStack {
+                        Circle()
+                            .fill(Color.indigo)
+                            .frame(width: 50, height: 50)
+                        Image(systemName: "plus")
+                            .foregroundColor(.white)
+                    }
+                    Spacer()
+                    Image(systemName: "bubble.left")
+                    Spacer()
+                    Image(systemName: "bookmark")
+                    Spacer()
                 }
-                Spacer()
-                Image(systemName: "bubble.left")
-                Spacer()
-                Image(systemName: "bookmark")
-                Spacer()
+                .padding()
+                .background(Color.white.shadow(radius: 4))
             }
-            .padding()
-            .background(Color.white.shadow(radius: 4))
+            .ignoresSafeArea()
         }
     }
 }
 
-struct JobCategoryCard: View {
+// MARK: - Category Pills
+struct CategoryTab: View {
     var title: String
-    var count: String
-    var color: Color
     var icon: String
 
     var body: some View {
         VStack(spacing: 8) {
             Image(systemName: icon)
-                .font(.title)
-                .foregroundColor(color)
-            Text(count)
-                .font(.title2)
-                .fontWeight(.bold)
+                .foregroundColor(.indigo)
+                .padding(12)
+                .background(Color.white)
+                .clipShape(Circle())
+                .shadow(radius: 2)
+
             Text(title)
-                .font(.subheadline)
-                .foregroundColor(.gray)
+                .font(.caption)
+                .foregroundColor(.black)
         }
-        .frame(width: 130, height: 100)
-        .background(color.opacity(0.1))
-        .cornerRadius(12)
     }
 }
 
+// MARK: - Job Card View
 struct JobItemView: View {
     var logo: String
     var title: String
@@ -188,9 +179,8 @@ struct JobItemView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            // Top row: Logo, Job Title, Location, Salary, Bookmark
             HStack(alignment: .top) {
-                Image(systemName: logo)
+                Image("icon_Girl")
                     .resizable()
                     .frame(width: 40, height: 40)
                     .padding(8)
@@ -218,7 +208,6 @@ struct JobItemView: View {
                 }
             }
 
-            // Tag and Apply row
             HStack {
                 ForEach(tags, id: \.self) { tag in
                     Text(tag)
@@ -243,7 +232,6 @@ struct JobItemView: View {
             }
         }
         .padding()
-        .frame(minHeight: 160) // Ensures visible height
         .background(
             RoundedRectangle(cornerRadius: 16)
                 .stroke(Color.black.opacity(0.2), lineWidth: 0.8)
@@ -251,13 +239,7 @@ struct JobItemView: View {
     }
 }
 
-#Preview {
-    HomeScreenView()
-}
-
-
-
-
+// MARK: - Job Model
 struct Job: Identifiable {
     let id = UUID()
     let logo: String
@@ -267,19 +249,29 @@ struct Job: Identifiable {
     let tags: [String]
 }
 
+// MARK: - Sample Data
 let jobList: [Job] = [
     Job(logo: "globe", title: "Product Designer", location: "California, USA", salary: "$15K / Mo", tags: ["Product Designer", "Full Time"]),
     Job(logo: "scribble.variable", title: "Software Engineer", location: "Redmond, WA", salary: "$18K / Mo", tags: ["Software Engineer", "Full Time"]),
     Job(logo: "waveform.path.ecg", title: "Data Scientist", location: "Austin, TX", salary: "$20K / Mo", tags: ["Data Scientist", "Remote"]),
-    Job(logo: "globe", title: "Product Designer", location: "California, USA", salary: "$15K / Mo", tags: ["Product Designer", "Full Time"]),
-    Job(logo: "scribble.variable", title: "Software Engineer", location: "Redmond, WA", salary: "$18K / Mo", tags: ["Software Engineer", "Full Time"]),
-    Job(logo: "waveform.path.ecg", title: "Data Scientist", location: "Austin, TX", salary: "$20K / Mo", tags: ["Data Scientist", "Remote"]),
-    Job(logo: "globe", title: "Product Designer", location: "California, USA", salary: "$15K / Mo", tags: ["Product Designer", "Full Time"]),
-    Job(logo: "scribble.variable", title: "Software Engineer", location: "Redmond, WA", salary: "$18K / Mo", tags: ["Software Engineer", "Full Time"]),
-    Job(logo: "waveform.path.ecg", title: "Data Scientist", location: "Austin, TX", salary: "$20K / Mo", tags: ["Data Scientist", "Remote"]),
-    Job(logo: "globe", title: "Product Designer", location: "California, USA", salary: "$15K / Mo", tags: ["Product Designer", "Full Time"]),
-    Job(logo: "scribble.variable", title: "Software Engineer", location: "Redmond, WA", salary: "$18K / Mo", tags: ["Software Engineer", "Full Time"]),
-    Job(logo: "waveform.path.ecg", title: "Data Scientist", location: "Austin, TX", salary: "$20K / Mo", tags: ["Data Scientist", "Remote"]),
-    // Repeat or generate more entries...
 ]
 
+// MARK: - Preview
+#Preview {
+    HomeScreenView()
+}
+
+// MARK: - RoundedCorner Shape
+struct RoundedCorner: Shape {
+    var radius: CGFloat = 15.0
+    var corners: UIRectCorner = .allCorners
+
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(
+            roundedRect: rect,
+            byRoundingCorners: corners,
+            cornerRadii: CGSize(width: radius, height: radius)
+        )
+        return Path(path.cgPath)
+    }
+}
